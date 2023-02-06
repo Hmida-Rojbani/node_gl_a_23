@@ -15,6 +15,7 @@ router.get('', (req, res) => {
 });
 
 router.get('/:stdId', (req, res) => {
+    console.log(req.ali);
     let student = students.find(std => std.id === parseInt(req.params.stdId))
     if (!student)
         return res.status(404).send('student with given id not found.')
