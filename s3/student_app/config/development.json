@@ -1,0 +1,8 @@
+{
+    "app" : {
+        "version" : "1.2.0"
+    },
+    "DB" : {
+        "host" :"url de test"
+    }
+}
