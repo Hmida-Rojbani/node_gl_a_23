@@ -8,7 +8,7 @@ const student_schema = new mongoose.Schema({
     },
     age: Number,
     active: Boolean,
-    payedAmount : Number
+    payedAmount : Number,
 });
 
 const Student = mongoose.model('Student',student_schema);
