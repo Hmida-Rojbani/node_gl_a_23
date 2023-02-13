@@ -5,19 +5,29 @@ function softTraitment() {
     console.log("Connect to Calcul API");
     setTimeout(() => {
       console.log("retreive from Calcul API");
-      sum = 100000000000;
+      sum = 100000000000000;
       reslove(sum)
     }, 2000);
   });
     }
-    
+
+  async function exec(){
+    try {
+      let sum = await softTraitment();
+      let res = await By5(sum);
+      display(res);
+    } catch (error) {
+      console.error('Error : ',error);
+    }
+      
+      
+    }
   
   console.log("Begin ");
- softTraitment().then(sum => By5(sum))
-                .then(res => display2(res))
-                .catch(err => console.error('Error :',err))
-                
-  
+//  softTraitment().then(sum => By5(sum))
+//                 .then(res => display2(res))
+//                 .catch(err => console.error('Error :',err))
+   exec(); 
   console.log("End");
   
   function display(sum) {
