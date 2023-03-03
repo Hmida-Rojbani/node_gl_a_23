@@ -5,7 +5,15 @@ const router = require('express').Router();
 
 router.post('/', async (req, res) =>{
     let student = new Student(req.body);
-    student = await student.save();
+    let valid_err = student.validateData(req.body);
+    if(valid_err)
+        return res.status(400).send(valid_err.message);
+    try {
+        student = await student.save();
+    } catch (error) {
+        return res.status(400).send(error.message);
+    }
+    
     res.status(201).send(student);
 })
 
