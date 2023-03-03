@@ -1,15 +1,23 @@
 const mongoose  = require('mongoose');
 const {Student} = require('../models/student');
-const _ = require('lodash')
+const _ = require('lodash');
+const { ClassRoom } = require('../models/classroom');
 const router = require('express').Router();
 
 router.post('/', async (req, res) =>{
     let student = new Student(req.body);
     let valid_err = student.validateData(req.body);
+    let classRoom = await ClassRoom.findById(req.body.classId);
     if(valid_err)
         return res.status(400).send(valid_err.message);
+    if(!classRoom)
+        return res.status(400).send('ClassRoom id is not found');
     try {
+        student.classRoom.id=classRoom._id;
+        student.classRoom.name = classRoom.name;
+        classRoom.studentNumber++;
         student = await student.save();
+        await classRoom.save()
     } catch (error) {
         return res.status(400).send(error.message);
     }
@@ -25,7 +33,8 @@ router.get('/', async (req, res) =>{
 router.get('/id/:id', async (req, res) =>{
     if(!mongoose.Types.ObjectId.isValid(req.params.id))
         return res.status(400).send('The id is not a mongo db valid id.')
-    let student = await Student.findById(req.params.id);
+    let student = await Student.findById(req.params.id)
+                                .populate('classRoom.id');
     if(!student)
         return res.status(404).send('The student id not found.')
     res.status(200).send(student);
